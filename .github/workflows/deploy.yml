@@ -1,0 +1,46 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - devops
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run Semgrep
+      uses: returntocorp/semgrep-action@v1
+      with:
+        config: p/security-audit
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Plan
+      run: terraform plan
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+
+    - name: Deploy Application
+      run: |
+        ssh -o "StrictHostKeyChecking=no" -i ~/.ssh/nv.pem ec2-user@$(terraform output -raw web_instance_ip) << EOF
+          cd next-app
+          npm start
+        EOF
