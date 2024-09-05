@@ -31,9 +31,15 @@ jobs:
 
     - name: Terraform Init
       run: terraform init
+      env:
+        AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
       
     - name: Terraform Plan
       run: terraform plan
+      env:
+        AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
