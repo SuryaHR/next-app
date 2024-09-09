@@ -63,5 +63,3 @@ jobs:
             npm start
           EOF
         shell: /usr/bin/bash -e {0}
-        env:
-          TERRAFORM_CLI_PATH: /home/runner/work/_temp/terraform-bin
