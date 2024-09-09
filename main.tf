@@ -79,7 +79,7 @@ resource "aws_instance" "web" {
   ami           = "ami-0182f373e66f89c85"  # Amazon Linux 2 AMI
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public.id
-  security_groups = [aws_security_group.allow_http.name]
+  vpc_security_group_ids = [aws_security_group.allow_http.id]
   key_name      = "nv"  # Your key pair name
 
   tags = {
