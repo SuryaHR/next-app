@@ -29,6 +29,13 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
 
+    - name: Add SSH private key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/nv.pem
+        chmod 600 ~/.ssh/nv.pem
+
+
     - name: Terraform Init
       run: terraform init
       env:
@@ -57,4 +64,4 @@ jobs:
           EOF
         shell: /usr/bin/bash -e {0}
         env:
-          TERRAFORM_CLI_PATH: /home/runner/work/_temp/6a10ee3f-2a10-4dcd-a162-af55b88a23df
+          TERRAFORM_CLI_PATH: /home/runner/work/_temp/terraform-bin
