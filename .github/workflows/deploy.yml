@@ -50,6 +50,11 @@ jobs:
     - name: Deploy Application
       run: |
         ssh -o "StrictHostKeyChecking=no" -i ~/.ssh/nv.pem ec2-user@$(terraform output -raw web_instance_ip) << EOF
-          cd next-app
-          npm start
-        EOF
+            cd next-app
+            npm install
+            npm run build
+            npm start
+          EOF
+        shell: /usr/bin/bash -e {0}
+        env:
+          TERRAFORM_CLI_PATH: /home/runner/work/_temp/6a10ee3f-2a10-4dcd-a162-af55b88a23df
